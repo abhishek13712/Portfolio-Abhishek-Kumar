@@ -9,10 +9,10 @@ const images= "https://res.cloudinary.com/dxyygkfd9/image/upload/v1744985957/con
 const ContactUs = () => {
 
   const [message,setMessage]=useState({
-    name:"",
-    email:"",
-    subject:"",
-    message:""
+    Name:"",
+    Email:"",
+    Subject:"",
+    Message:""
   })
 
   const changeHandler=(e)=>{
@@ -36,6 +36,12 @@ const ContactUs = () => {
 
       const data = await response.json();
       alert(data.status);
+      setMessage({
+        Name: "",
+        Email: "",
+        Subject: "",
+        Message: ""
+      });
     } catch (err) {
       console.error('Error sending email:', err);
     }
@@ -60,8 +66,8 @@ const ContactUs = () => {
   <input
     type="text"
     id="name"
-    name="name"
-    value={message.name}
+    name="Name"
+    value={message.Name}
     onChange={changeHandler}
     placeholder="Enter your name"
     className="pt-[20px] pb-[7px] pl-[8px] flex-1 border-b-2 focus:outline-none pr-2 focus:border-b-red-500 w-full "
@@ -73,8 +79,8 @@ const ContactUs = () => {
   <input
     type="email"
     id="email"
-    name="email"
-    value={message.email}
+    name="Email"
+    value={message.Email}
     onChange={changeHandler}
     placeholder="Enter your email"
     className="pt-[20px] pb-[7px] pl-[8px] flex-1 border-b-2 focus:outline-none focus:border-b-red-500 w-1/2 "
@@ -88,8 +94,8 @@ const ContactUs = () => {
       <input 
       type="text"
        id="subject"
-        name="subject"
-        value={message.subject}
+        name="Subject"
+        value={message.Subject}
        onChange={changeHandler}
          placeholder="Enter your Subject" className="pt-[20px] pb-[7px] pl-[8px] w-full border-b-2 focus:outline-none  focus:border-red-500 focus:transition-colors focus:duration-600 focus:ease-in-out" required/>
       </div>
@@ -97,8 +103,8 @@ const ContactUs = () => {
       {/* <label for="message">Message:</label><br/> */}
       <textarea 
       id="message"
-       name="message" 
-       value={message.message}
+       name="Message" 
+       value={message.Message}
        onChange={changeHandler}
        rows="5" 
        cols="40" 
