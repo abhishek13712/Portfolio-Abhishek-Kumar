@@ -7,21 +7,28 @@ import ContactUs from "./pages/ContactUs";
 import Navigation from "./pages/Navigation";
 import Hello from "./pages/Hello";
 import Skills from "./pages/Skills";
+import { useNavigate } from "react-router-dom";
 
 const App = () => {
   // State to manage when to show the Hello component
   const [showHello, setShowHello] = useState(true); // Show Hello initially
   const [showContent, setShowContent] = useState(false); // Show main content after 3 seconds
+  const navigate = useNavigate();
 
   useEffect(() => {
+
+
     // Set a timeout for showing content after Hello disappears
     const helloTimeout = setTimeout(() => {
       setShowHello(false); // Hide Hello after 3 seconds
       setShowContent(true); // Show main content
     }, 3000); // Adjust this time to match your Hello animation duration
+    // navigate('/');
 
+    navigate('/');
     // Cleanup timeout on component unmount
     return () => clearTimeout(helloTimeout);
+
   }, []);
 
   return (
@@ -40,6 +47,7 @@ const App = () => {
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/navigation" element={<Navigation />} />
               <Route path="/skills" element={<Skills />} />
+              {/* <Route path="*" element={<Navigate to="/" />} /> */}
             </Routes>
           </div>
         </div>
