@@ -4,7 +4,7 @@ const Contact=require("./router/Contactus")
 const cors = require('cors');
 const allowedOrigins = [
 	"http://localhost:3000",  // local frontend
-	"https://portfolio-abhishek-kumar-frontend.vercel.app/"  // deployed frontend
+	"https://portfolio-abhishek-kumar-frontend.vercel.app"  // deployed frontend
   ];
   
 
