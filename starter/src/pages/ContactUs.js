@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom';
 import { IoMdSend } from "react-icons/io";
 import { MdMyLocation } from "react-icons/md";
 import { CiMail } from "react-icons/ci";
+import toast from 'react-hot-toast';
+import { useCallback } from 'react';
 
 const images= "https://res.cloudinary.com/dxyygkfd9/image/upload/v1744985957/contactImage_iefkxr.jpg"
 const ContactUs = () => {
@@ -15,16 +17,29 @@ const ContactUs = () => {
     Message:""
   })
 
-  const changeHandler=(e)=>{
+  const changeHandler = useCallback((e) => {
     setMessage({
       ...message,
-      [e.target.name]:e.target.value,
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  }, [message]);
 
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    return regex.test(email);
+  };
+  
 
   const sendEmail = async (e) => {
     e.preventDefault();
+    toast.loading("Sending message...");
+
+    if (!validateEmail(message.Email)) {
+      toast.dismiss(); 
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+    
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/send-message`, {
         method: 'POST',
@@ -34,15 +49,20 @@ const ContactUs = () => {
         body: JSON.stringify(message),
       });
 
-      const data = await response.json();
-      alert(data.status);
+      // const data = await response.json();
+      // alert(data.status);
       setMessage({
         Name: "",
         Email: "",
         Subject: "",
         Message: ""
       });
+      toast.dismiss(); 
+      toast.success("Message sent successfully!")
+      
     } catch (err) {
+      toast.dismiss(); 
+      toast.error("Something went wrong. Please try again.");
       console.error('Error sending email:', err);
     }
   };
@@ -70,7 +90,7 @@ const ContactUs = () => {
     value={message.Name}
     onChange={changeHandler}
     placeholder="Enter your name"
-    className="pt-[20px] pb-[7px] pl-[8px] flex-1 border-b-2 focus:outline-none pr-2 focus:border-b-red-500 w-full "
+    className="pt-[20px] pb-[7px] pl-[8px] flex-1 border-b-2 focus:outline-none pr-2 focus:border-b-bluish w-full "
     required
     
   />
@@ -83,7 +103,7 @@ const ContactUs = () => {
     value={message.Email}
     onChange={changeHandler}
     placeholder="Enter your email"
-    className="pt-[20px] pb-[7px] pl-[8px] flex-1 border-b-2 focus:outline-none focus:border-b-red-500 w-1/2 "
+    className="pt-[20px] pb-[7px] pl-[8px] flex-1 border-b-2 focus:outline-none focus:border-b-bluish w-1/2 "
     required
   />
 </div>
@@ -97,7 +117,7 @@ const ContactUs = () => {
         name="Subject"
         value={message.Subject}
        onChange={changeHandler}
-         placeholder="Enter your Subject" className="pt-[20px] pb-[7px] pl-[8px] w-full border-b-2 focus:outline-none  focus:border-red-500 focus:transition-colors focus:duration-600 focus:ease-in-out" required/>
+         placeholder="Enter your Subject" className="pt-[20px] pb-[7px] pl-[8px] w-full border-b-2 focus:outline-none  focus:border-b-bluish focus:transition-colors focus:duration-600 focus:ease-in-out" required/>
       </div>
 
       {/* <label for="message">Message:</label><br/> */}
@@ -108,7 +128,7 @@ const ContactUs = () => {
        onChange={changeHandler}
        rows="5" 
        cols="40" 
-       placeholder="Type your message here..." className="pt-[20px] pl-[8px] w-full border-b-2 focus:outline-none focus:border-b-red-500 " required></textarea>
+       placeholder="Type your message here..." className="pt-[20px] pl-[8px] w-full border-b-2 focus:outline-none focus:border-b-bluish " required></textarea>
 
       {/* <div className="w-full border-2"> */}
       <button  type='submit' className= " opacity-80 bg-bluish text-white  px-9 py-4 border-2 flex items-center hover:opacity-100 ">
